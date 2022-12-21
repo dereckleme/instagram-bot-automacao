@@ -1,0 +1,27 @@
+version: '3'
+services:
+#  mysql57:
+#    image: mysql:8.0.29
+#    restart: unless-stopped
+#    container_name: at-kraken-mysql
+#    ports:
+#      - "127.0.0.1:3366:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: rootPassword
+#    volumes:
+#      - .db:/var/lib/mysql
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - SERVICES=sqs
+      - AWS_ACCESS_KEY_ID=dev
+      - AWS_SECRET_ACCESS_KEY=dev
+    ports:
+      - "4566:4566"
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "$PWD/tools/:/docker-entrypoint-initaws.d/"
